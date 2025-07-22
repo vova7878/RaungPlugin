@@ -1,0 +1,39 @@
+plugins {
+    alias(libs.plugins.java.gradle.plugin)
+    alias(libs.plugins.maven.publish)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+
+    withSourcesJar()
+}
+
+dependencies {
+    compileOnly(gradleApi())
+    compileOnly(libs.android.gradle)
+
+    implementation 'io.github.skylot:raung-asm:0.1.1'
+}
+
+gradlePlugin {
+    plugins {
+        register('zygote') {
+            id = "${rootProject.group}.${rootProject.name}"
+            implementationClass = 'com.v7878.gradle.raung.RaungPlugin'
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            version project.version
+
+            from components.java
+        }
+    }
+}
