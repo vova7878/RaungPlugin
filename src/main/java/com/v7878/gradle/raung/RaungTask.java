@@ -45,7 +45,7 @@ public abstract class RaungTask extends DefaultTask {
                         //noinspection ResultOfMethodCallIgnored
                         outputFile.getParentFile().mkdirs();
 
-                        getProject().getLogger().info("Compiling Raung file: {}", file);
+                        getLogger().info("Compiling Raung file: {}", file);
                         try {
                             RaungAsm.create()
                                     .input(file.getFile().toPath())
