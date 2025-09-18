@@ -1,8 +1,10 @@
 [versions]
-agp = "8.11.1"
+agp = "8.13.0"
+raung = "0.1.1"
 
 [libraries]
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+raung-asm = { module = "io.github.skylot:raung-asm", version.ref = "raung" }
 
 [plugins]
 maven-publish = { id = 'maven-publish' }
