@@ -16,7 +16,6 @@ dependencies {
 }
 
 gradlePlugin {
-    isAutomatedPublishing = false
     plugins {
         register("zygote") {
             id = when {
@@ -24,18 +23,6 @@ gradlePlugin {
                 else -> "${rootProject.group}.${rootProject.name}"
             }
             implementationClass = "com.v7878.gradle.raung.RaungPlugin"
-        }
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("pluginMaven") {
-            groupId = project.group.toString()
-            artifactId = project.name
-            version = project.version.toString()
-
-            from(components["java"])
         }
     }
 }
