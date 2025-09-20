@@ -23,6 +23,7 @@
 package com.v7878.gradle.raung;
 
 import static com.v7878.gradle.raung.RaungPlugin.RAUNG_FILE_PATTERN;
+import static com.v7878.gradle.raung.Utils.files;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
@@ -57,26 +58,24 @@ public abstract class RaungTask extends DefaultTask {
         getSourceDirectory()
                 .getAsFileTree()
                 .matching(pattern -> pattern.include(RAUNG_FILE_PATTERN))
-                .visit(file -> {
-                    if (!file.isDirectory()) {
-                        String path = file.getPath();
-                        path = path.substring(0, path.length() - 6);
-                        path += ".class";
-                        File outputFile = new File(dstDir, path);
+                .visit(files(file -> {
+                    String path = file.getPath();
+                    path = path.substring(0, path.length() - 6);
+                    path += ".class";
+                    File outputFile = new File(dstDir, path);
 
-                        //noinspection ResultOfMethodCallIgnored
-                        outputFile.getParentFile().mkdirs();
+                    //noinspection ResultOfMethodCallIgnored
+                    outputFile.getParentFile().mkdirs();
 
-                        getLogger().info("Compiling Raung file: {}", file);
-                        try {
-                            RaungAsm.create()
-                                    .input(file.getFile().toPath())
-                                    .output(outputFile.toPath())
-                                    .execute();
-                        } catch (Exception e) {
-                            throw new GradleException("Failed to compile Raung file: " + file.getFile().toPath(), e);
-                        }
+                    getLogger().info("Compiling Raung file: {}", file);
+                    try {
+                        RaungAsm.create()
+                                .input(file.getFile().toPath())
+                                .output(outputFile.toPath())
+                                .execute();
+                    } catch (Exception e) {
+                        throw new GradleException("Failed to compile Raung file: " + file.getFile().toPath(), e);
                     }
-                });
+                }));
     }
 }

@@ -22,9 +22,10 @@
 
 package com.v7878.gradle.raung;
 
+import static com.v7878.gradle.raung.Utils.computeTaskName;
+
 import com.android.build.api.dsl.ApplicationExtension;
 import com.android.build.api.dsl.LibraryExtension;
-import com.v7878.gradle.raung.util.StringUtils;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -75,7 +76,7 @@ public class RaungPlugin implements Plugin<Project> {
         var classesDir = buildDir.dir("intermediates/compile_raung/classes/" + name);
 
         var compileTask = project.getTasks().register(
-                StringUtils.computeTaskName("compile", name, "raung"),
+                computeTaskName("compile", name, "raung"),
                 RaungTask.class, task -> {
                     task.setDescription("Compiles Raung files for " + name + " source set");
 
@@ -85,7 +86,7 @@ public class RaungPlugin implements Plugin<Project> {
         );
 
         var jarTask = project.getTasks().register(
-                StringUtils.computeTaskName("jar", name, "raung"),
+                computeTaskName("jar", name, "raung"),
                 Jar.class, jar -> {
                     jar.getDestinationDirectory().set(jarDir);
 

@@ -20,14 +20,20 @@
  * SOFTWARE.
  */
 
-package com.v7878.gradle.raung.util;
+package com.v7878.gradle.raung;
 
-public final class StringUtils {
-    public static String capitalize(String value) {
-        if (value.isEmpty()) {
+import org.gradle.api.file.FileVisitDetails;
+import org.gradle.api.file.FileVisitor;
+
+import java.util.function.Consumer;
+
+public class Utils {
+    public static String capitalize(String in) {
+        if (in.isEmpty()) {
             return "";
         }
-        return Character.toUpperCase(value.charAt(0)) + value.substring(1);
+
+        return Character.toUpperCase(in.charAt(0)) + in.substring(1);
     }
 
     public static String computeTaskName(String first, String... parts) {
@@ -36,5 +42,19 @@ public final class StringUtils {
             b.append(capitalize(part));
         }
         return b.toString();
+    }
+
+    public static FileVisitor files(Consumer<FileVisitDetails> visitor) {
+        return new FileVisitor() {
+            @Override
+            public void visitDir(FileVisitDetails dirDetails) {
+                // nop
+            }
+
+            @Override
+            public void visitFile(FileVisitDetails fileDetails) {
+                visitor.accept(fileDetails);
+            }
+        };
     }
 }
