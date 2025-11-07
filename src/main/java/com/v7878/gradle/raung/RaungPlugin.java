@@ -42,29 +42,29 @@ public class RaungPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
         var android = project.getExtensions().findByName("android");
-        switch (android) {
-            case ApplicationExtension app -> app.getSourceSets().all(sourceSet -> {
+        if (android instanceof ApplicationExtension app) {
+            app.getSourceSets().all(sourceSet -> {
                 ((PatternFilterable) (sourceSet.getResources())).exclude(RAUNG_FILE_PATTERN);
 
                 processSourceSet(project, sourceSet.getName(), sourceSet.getApiConfigurationName(),
                         sourceSet.getImplementationConfigurationName(), project.files(sourceSet.getJava().getDirectories()));
             });
-            case LibraryExtension lib -> lib.getSourceSets().all(sourceSet -> {
+        } else if (android instanceof LibraryExtension lib) {
+            lib.getSourceSets().all(sourceSet -> {
                 ((PatternFilterable) (sourceSet.getResources())).exclude(RAUNG_FILE_PATTERN);
 
                 processSourceSet(project, sourceSet.getName(), sourceSet.getApiConfigurationName(),
                         sourceSet.getImplementationConfigurationName(), project.files(sourceSet.getJava().getDirectories()));
             });
-            case null, default -> {
-                var java = project.getExtensions().getByType(JavaPluginExtension.class);
+        } else {
+            var java = project.getExtensions().getByType(JavaPluginExtension.class);
 
-                java.getSourceSets().all(sourceSet -> {
-                    sourceSet.getResources().exclude(RAUNG_FILE_PATTERN);
+            java.getSourceSets().all(sourceSet -> {
+                sourceSet.getResources().exclude(RAUNG_FILE_PATTERN);
 
-                    processSourceSet(project, sourceSet.getName(), sourceSet.getApiConfigurationName(),
-                            sourceSet.getImplementationConfigurationName(), sourceSet.getJava().getSourceDirectories());
-                });
-            }
+                processSourceSet(project, sourceSet.getName(), sourceSet.getApiConfigurationName(),
+                        sourceSet.getImplementationConfigurationName(), sourceSet.getJava().getSourceDirectories());
+            });
         }
     }
 
