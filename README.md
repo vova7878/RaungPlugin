@@ -7,10 +7,10 @@ This project is a gradle plugin for compiling [raung](https://github.com/skylot/
 
 ### Installation
 
-```java
+```kotlin
 plugins {
-    id 'java' or 'com.android.library' or 'com.android.application'
-    id 'com.github.vova7878.RaungPlugin' version 'v0.0.2'
+    id("java" or "com.android.application" or "com.android.library")
+    id("io.github.vova7878.RaungPlugin") version "<version>"
 }
 ```
 
