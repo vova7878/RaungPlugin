@@ -1,3 +1,6 @@
+import com.vanniktech.maven.publish.GradlePlugin
+import com.vanniktech.maven.publish.JavadocJar
+
 plugins {
     alias(libs.plugins.java.gradle.plugin)
     alias(libs.plugins.maven.publish)
@@ -5,7 +8,6 @@ plugins {
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
-    withSourcesJar()
 }
 
 dependencies {
@@ -27,6 +29,12 @@ gradlePlugin {
 mavenPublishing {
     publishToMavenCentral(automaticRelease = false)
     signAllPublications()
+    configure(
+        GradlePlugin(
+            sourcesJar = true,
+            javadocJar = JavadocJar.None(),
+        )
+    )
 
     coordinates(
         groupId = "io.github.vova7878",
