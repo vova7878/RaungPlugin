@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.GradlePlugin
 import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.SourcesJar
 
 plugins {
     alias(libs.plugins.java.gradle.plugin)
@@ -31,8 +32,8 @@ mavenPublishing {
     signAllPublications()
     configure(
         GradlePlugin(
-            sourcesJar = true,
-            javadocJar = JavadocJar.None(),
+            javadocJar = JavadocJar.Empty(),
+            sourcesJar = SourcesJar.Sources()
         )
     )
 
